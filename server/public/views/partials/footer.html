@@ -1,5 +1,9 @@
-<div>
+<div ng-controller="FooterController as fc">
+<div class="container" id="footer">
     <h3>Contact</h3>
     <p><a href="mailto:dan.buettner@cushwakenm.com">Email</a></p>
     <p><a href="tel:6123479305">612-347-9305</a></p>
+    <a href="#/login" class="employeeLogin" ng-if="!fc.user.userObject.userName">Employee Login</a>
+    <a class="employeeLogin" href="#/home" ng-if="fc.user.userObject.userName" ng-click="fc.logout()">Log Out</a>
+</div>
 </div>

@@ -21,13 +21,14 @@ myApp.service('UserService', function ($http, $location) {
         });
     },
 
-        self.logout = function () {
-            console.log('UserService -- logout');
-            $http.get('/user/logout').then(function (response) {
-                console.log('UserService -- logout -- logged out');
-                $location.path("/home");
-            });
-        }
+    self.logout = function () {
+        console.log('UserService -- logout');
+        $http.get('/user/logout').then(function (response) {
+            console.log('UserService -- logout -- logged out');
+            self.userObject = {};
+            $location.path("/home");
+        });
+    }
 
     self.refreshUsers = function () {
         $http.get('/user/refreshUser').then(function (response) {
@@ -53,7 +54,7 @@ myApp.service('UserService', function ($http, $location) {
         username: '',
         employeeId: ''
     }
-
+//how to create superuser without register
     self.editUser = function (user) {
         self.userToEdit = {
             e_id: user.e_id,

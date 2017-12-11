@@ -39,19 +39,19 @@
                 </span>
             </div>
             <input class="btn btn-default" type="submit" name="submit" value="Register" />
-            <a href="#home">Cancel</a>
+            <a href="#/admin">Cancel</a>
         </form>
     </div>
     <div ng-show="lc.userService.editingUser">
         <h1 class="lead">Edit User</h1>
         <form ng-submit="lc.userService.saveUserEdit()">
             <div>
-                <label for="e_id">Employee ID:</label>
-                <input type="text" ng-value="lc.userService.userToEdit.e_id" ng-model="lc.userService.userToEdit.e_id" />
+                <label for="e_id" ng-hide="lc.userService.userToEdit.e_id">Employee ID:</label>
+                <input type="text" ng-hide="lc.userService.userToEdit.e_id" ng-model="lc.userService.userToEdit.e_id" />
             </div>
             <div>
-                <label for="username">Username:</label>
-                <input type="text" ng-value="lc.userService.userToEdit.username" ng-model="lc.userService.userToEdit.username" />
+                <label for="username" ng-hide="lc.userService.userToEdit.username">Username:</label>
+                <input type="text" ng-hide="lc.userService.userToEdit.username" ng-model="lc.userService.userToEdit.username" />
             </div>
             <div>
                 <label for="firstname">First Name:</label>

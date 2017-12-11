@@ -108,3 +108,13 @@ li a:hover {
     text-decoration: underline;
     color: #eee;
 }
+
+footer.ng-scope {
+    background-color: lightgrey;
+    padding: 0px 10px 5px;
+}
+
+.employeeLogin {
+    float: right;
+    font-size: 10px;
+}

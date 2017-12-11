@@ -1,4 +1,4 @@
-<div class="navbar">
+<div class="navbar" ng-controller="NavController as nc">
     <div class="container">
         <ul>
             <li>
@@ -8,16 +8,16 @@
                 <a href="#/market">Market Page</a>
             </li>
             <li>
-                <a href="#/admin">User Home</a>
+                <a href="#/admin" ng-show="nc.user.userObject.userName">User Home</a>
             </li>
             <li>
-                <a href="#/office">Create Office</a>
+                <a href="#/office" ng-show="nc.user.userObject.userName">Create Office</a>
             </li>
             <li>
-                <a href="#/email-upload">Upload Email</a>
+                <a href="#/email-upload" ng-show="nc.user.userObject.userName">Upload Email</a>
             </li>
             <li>
-                <a href="#/email-history">Email History</a>
+                <a href="#/email-history" ng-show="nc.user.userObject.userName">Email History</a>
             </li>
         </ul>
     </div>
