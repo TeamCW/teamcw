@@ -12,7 +12,7 @@ myApp.controller('MarketController', function (NgMap, DataService, $location, Us
     }
 
     //Retrieve markets for dropdown selection
-    self.getMarkets = function(state) {
+    self.getMarkets = function (state) {
         DataService.getMarkets(state);
     }
     self.getMarkets(self.options.state);
@@ -36,34 +36,35 @@ myApp.controller('MarketController', function (NgMap, DataService, $location, Us
 
     //Dynamically places color on Google maps marker
     self.customMarker = function (location) {
-        return Object.assign(self.marker, {fillColor: self.locationColor[location.Class] || 'red'})
-    }
+        return Object.assign(self.marker, { fillColor: self.locationColor[location.Class] || 'red' });
+    };
 
     let year = (new Date()).getFullYear();
     let month = (new Date()).getMonth() + 1;
     let quarter;
-    function calcQuarter(){
-        if(month < 4){
+    function calcQuarter() {
+        if (month < 4) {
             quarter = 4
-        } else if(month > 3 && month < 7){
+        } else if (month > 3 && month < 7) {
             quarter = 1
-        } else if(month > 6 && month < 10){
+        } else if (month > 6 && month < 10) {
             quarter = 2
-        } else if(month > 9){
+        } else if (month > 9) {
             quarter = 3
         }
     }
     calcQuarter();
 
     self.mapSize = 'col-xs-12';
-    //Click event on Google maps markers
+
+
     self.click = function (event, item) {
         self.selectedItem = item;
         self.mapSize = 'col-xs-12 col-sm-10'
     };
 
     //Navigate to selected property page
-    self.viewProperty = function() {
+    self.viewProperty = function () {
         $location.path(`/property/${self.selectedItem.State}/${encodeURIComponent(self.selectedItem.Submarket)}/${year}/${quarter}/${self.selectedItem.Property_Id}`);
     }
 
@@ -72,15 +73,15 @@ myApp.controller('MarketController', function (NgMap, DataService, $location, Us
 
     })
 
-    self.searchData = function(value) {
+    self.searchData = function (value) {
         self.getMarketData(value);
         self.getAbsorptionData(value);
         self.getVacancyData(value);
         self.getMarketPropertyData(value);
     }
 
-    self.getMarketData = function(value){
-        DataService.getMarketData(value).then(function(){
+    self.getMarketData = function (value) {
+        DataService.getMarketData(value).then(function () {
             let ctx = document.getElementById("inventoryChart").getContext("2d");
             let inventoryChart = new Chart(ctx, {
                 type: 'doughnut',
@@ -95,8 +96,8 @@ myApp.controller('MarketController', function (NgMap, DataService, $location, Us
         })
     }
 
-    self.getAbsorptionData = function(value){
-        DataService.getAbsorptionData(value).then(function(){
+    self.getAbsorptionData = function (value) {
+        DataService.getAbsorptionData(value).then(function () {
             let ctx = document.getElementById("absorptionChart").getContext("2d");
             let year = [];
             let className = [];
@@ -104,20 +105,20 @@ myApp.controller('MarketController', function (NgMap, DataService, $location, Us
 
             //Object constructor for each type of building class to be plotted as a line
             let Item = function (data, label, fill) {
-                this.data = data,
-                    this.label = label,
-                    this.fill = fill,
-                    this.borderColor = [],
-                    this.calcBorderColor = function () {
-                        if (this.label === 'Class A') {
-                            this.borderColor = ['#003865'];
-                        } else if (this.label === 'Class B') {
-                            this.borderColor = ['#9bd3dd'];
-                        } else {
-                            this.borderColor = ['#b5bd00'];
-                        }
+                this.data = data;
+                this.label = label;
+                this.fill = fill;
+                this.borderColor = [];
+                this.calcBorderColor = function () {
+                    if (this.label === 'Class A') {
+                        this.borderColor = ['#003865'];
+                    } else if (this.label === 'Class B') {
+                        this.borderColor = ['#9bd3dd'];
+                    } else {
+                        this.borderColor = ['#b5bd00'];
                     }
-            }
+                };
+            };
 
             //Create array of all years
             self.marketData.inventory.forEach(function (value) {
@@ -133,14 +134,14 @@ myApp.controller('MarketController', function (NgMap, DataService, $location, Us
                     className.push(value.Class);
                     className.sort();
                 }
-            })
+            });
 
             //Add an object to an array for each building class type
             className.forEach(function (value) {
                 let datapoint = new Item([], value, false);
                 datapoint.calcBorderColor();
                 dataObjects.push(datapoint);
-            })
+            });
 
             //Add yearly absorption data to each building class object 
             self.marketData.inventory.forEach(function (value) {
@@ -148,8 +149,8 @@ myApp.controller('MarketController', function (NgMap, DataService, $location, Us
                     if (item.label === value.Class) {
                         item.data.push(value.Absorption);
                     }
-                })
-            })
+                });
+            });
 
             let absorptionChart = new Chart(ctx, {
                 type: 'line',
@@ -157,13 +158,13 @@ myApp.controller('MarketController', function (NgMap, DataService, $location, Us
                     labels: year,
                     datasets: dataObjects,
                 }
-            })
+            });
 
-        })
-    }
+        });
+    };
 
-    self.getVacancyData = function(value) {
-        DataService.getVacancyData(value).then(function(){
+    self.getVacancyData = function (value) {
+        DataService.getVacancyData(value).then(function () {
             let ctx = document.getElementById("vacancyChart").getContext("2d");
             let year = [];
             let className = [];
@@ -171,20 +172,20 @@ myApp.controller('MarketController', function (NgMap, DataService, $location, Us
 
             //Object constructor for each type of building class to be plotted as a line
             let Item = function (data, label, fill) {
-                this.data = data,
-                    this.label = label,
-                    this.fill = fill,
-                    this.backgroundColor = [],
-                    this.calcBackgroundColor = function () {
-                        if (this.label === 'Class A') {
-                            this.backgroundColor = ['#003865', '#003865', '#003865', '#003865', '#003865', '#003865', '#003865', '#003865', '#003865', '#003865'];
-                        } else if (this.label === 'Class B') {
-                            this.backgroundColor = ['#9bd3dd', '#9bd3dd', '#9bd3dd', '#9bd3dd', '#9bd3dd', '#9bd3dd', '#9bd3dd', '#9bd3dd', '#9bd3dd', '#9bd3dd'];
-                        } else {
-                            this.backgroundColor = ['#b5bd00', '#b5bd00', '#b5bd00', '#b5bd00', '#b5bd00', '#b5bd00', '#b5bd00', '#b5bd00', '#b5bd00', '#b5bd00'];
-                        }
+                this.data = data;
+                this.label = label;
+                this.fill = fill;
+                this.backgroundColor = [];
+                this.calcBackgroundColor = function () {
+                    if (this.label === 'Class A') {
+                        this.backgroundColor = ['#003865', '#003865', '#003865', '#003865', '#003865', '#003865', '#003865', '#003865', '#003865', '#003865'];
+                    } else if (this.label === 'Class B') {
+                        this.backgroundColor = ['#9bd3dd', '#9bd3dd', '#9bd3dd', '#9bd3dd', '#9bd3dd', '#9bd3dd', '#9bd3dd', '#9bd3dd', '#9bd3dd', '#9bd3dd'];
+                    } else {
+                        this.backgroundColor = ['#b5bd00', '#b5bd00', '#b5bd00', '#b5bd00', '#b5bd00', '#b5bd00', '#b5bd00', '#b5bd00', '#b5bd00', '#b5bd00'];
                     }
-            }
+                };
+            };
 
             //Create array of all years
             self.marketData.vacancy.forEach(function (value) {
@@ -200,14 +201,14 @@ myApp.controller('MarketController', function (NgMap, DataService, $location, Us
                     className.push(value.Class);
                     className.sort();
                 }
-            })
+            });
 
             //Add an object to an array for each building class type
             className.forEach(function (value) {
                 let datapoint = new Item([], value, false);
                 datapoint.calcBackgroundColor();
                 dataObjects.push(datapoint);
-            })
+            });
 
             //Add yearly absorption data to each building class object 
             self.marketData.vacancy.forEach(function (value) {
@@ -215,8 +216,8 @@ myApp.controller('MarketController', function (NgMap, DataService, $location, Us
                     if (item.label === value.Class) {
                         item.data.push(value.Squarefeet_Vacant);
                     }
-                })
-            })
+                });
+            });
 
             let vacancyChart = new Chart(ctx, {
                 type: 'bar',
@@ -240,23 +241,23 @@ myApp.controller('MarketController', function (NgMap, DataService, $location, Us
                         }]
                     }
                 }
-            })
-        })
-    }
-
-    self.getMarketPropertyData = function(value) {
-        DataService.getMarketPropertyData(value).then(function(properties){
-            self.marketData.properties.map(function (property, index) {
-                return Object.assign(property, {marker: Object.assign({}, self.marker, {fillColor: self.locationColor[property.Class] || 'red'})}, {id: '' + index});
             });
-        })
-    }
+        });
+    };
 
-    self.pageLoad = function(value){
+    self.getMarketPropertyData = function (value) {
+        DataService.getMarketPropertyData(value).then(function (properties) {
+            self.marketData.properties.map(function (property, index) {
+                return Object.assign(property, { marker: Object.assign({}, self.marker, { fillColor: self.locationColor[property.Class] || 'red' }) }, { id: '' + index });
+            });
+        });
+    };
+
+    self.pageLoad = function (value) {
         self.getMarketData(value);
         self.getAbsorptionData(value);
         self.getVacancyData(value);
         self.getMarketPropertyData(value);
-    }
+    };
     self.pageLoad(self.options);
 });

@@ -21,7 +21,7 @@ router.get('/', function (req, res) {
       db.query(queryText, [
         batchId
       ], function (errorMakingQuery, result) {
-        console.log('used this batchId', batchId)
+        console.log('used this batchId', batchId);
         done();
         if (errorMakingQuery) {
           console.log('error making query', errorMakingQuery);
@@ -32,6 +32,48 @@ router.get('/', function (req, res) {
       });
     }
   }); //end of pool
+});
+
+router.get('/batches/', function (req, res) {
+  pool.connect(function (errorConnecting, db, done) {
+    if (errorConnecting) {
+      console.log('Error connecting', errorConnecting);
+      res.sendStatus(500);
+    } else {
+      var queryText = 'SELECT * FROM "email_batch"' +
+      'JOIN "offices" on "email_batch".office_id = "offices".office_id;';
+      db.query(queryText, function (errorMakingQuery, result) {
+        done();
+        if (errorMakingQuery) {
+          console.log('error making query', errorMakingQuery);
+          res.sendStatus(500);
+        } else {
+          res.send(result.rows);
+        }
+      });
+    }
+  }); //end of pool
+});
+
+router.delete('/batches/',function(req,res) {
+  var batch_id = req.query.batch_id;
+  pool.connect(function(errorConnecting, db, done){
+    if (errorConnecting) {
+      console.log('Error connecting to delete batch', errorConnecting);
+      res.sendStatus(500);
+    } else {
+      var queryText = 'DELETE FROM "email_batch" WHERE "batch_id" = $1';
+      db.query(queryText, [batch_id], function (errorMakingQuery, result) {
+        done();
+        if (errorMakingQuery) {
+          console.log('Query error deleting batches', errorMakingQuery);
+          res.sendStatus(500);
+        } else {
+          res.sendStatus(200);
+        }
+      });
+    }
+  });
 });
 
 router.post('/csv/', function (req, res) {
@@ -81,7 +123,7 @@ router.put('/', function (req, res) {
     if (errorConnecting) {
       res.sendStatus(500);
     } else {
-      var queryText = 'UPDATE "emails" SET "clicked" = TRUE WHERE "email_id" = $1 RETURNING "email_id";';
+      var queryText = 'UPDATE "emails" SET "clicked" = TRUE WHERE "email_id" = $1 RETURNING *;';
       db.query(queryText, [
         emailId
       ], function (errorMakingQuery, result) {
@@ -90,7 +132,7 @@ router.put('/', function (req, res) {
           res.sendStatus(500);
         } else {
           res.send({
-            email_id: result.rows[0].email_id,
+            contact: result.rows[0],
             index: index
           });
         }
@@ -123,6 +165,36 @@ router.get('/single/', function (req, res) {
     }
   }); //end of pool
 
+});
+
+router.put('/insertlink/', function (req, res) {
+  console.log('market link request', req.query);
+  var emailId = req.query.id;
+  var marketLink = req.query.market_link;
+  var index = req.query.index;
+  pool.connect(function (errorConnecting, db, done) {
+    if (errorConnecting) {
+      console.log('error connecting marketlink',errorConnecting);
+      res.sendStatus(500);
+    } else {
+      var queryText = 'UPDATE "emails" SET "market_link" = $2 WHERE "email_id" = $1 RETURNING *;';
+      db.query(queryText, [
+        emailId,
+        marketLink
+      ], function (errorMakingQuery, result) {
+        done();
+        if (errorMakingQuery) {
+          console.log('query error marketlink',errorMakingQuery);
+          res.sendStatus(500);
+        } else {
+          res.send({
+            contact: result.rows[0],
+            index: index
+          });
+        }
+      });
+    }
+  }); //end of pool
 });
 
 router.put('/track/',function(req,res){
@@ -221,6 +293,7 @@ function storeEmailCSV(dataInfo) {
     let data = dataInfo.uploadedData;
     let user = dataInfo.user;
     let batchId = dataInfo.batchId;
+    console.log('attempting to store Email CSV');
     data.forEach((contact) => {
       pool.connect(function (errorConnecting, db, done) {
         if (errorConnecting) {
@@ -242,7 +315,7 @@ function storeEmailCSV(dataInfo) {
           ], function (errorMakingQuery, result) {
             done();
             if (errorMakingQuery) {
-              console.log('error making query', errorMakingQuery);
+              console.log('error making email entry query', errorMakingQuery);
               reject(errorMakingQuery);
             } else {
 

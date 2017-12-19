@@ -78,8 +78,8 @@ myApp.config(function ($routeProvider, $locationProvider) {
                 }
             }
         })
-        .when('/email-list', {
-            templateUrl: '/views/templates/email-list.html',
+        .when('/email-history', {
+            templateUrl: '/views/templates/email-history.html',
             controller: 'EmailController as vm',
             resolve: {
                 getuser: function (UserService) {
@@ -87,8 +87,8 @@ myApp.config(function ($routeProvider, $locationProvider) {
                 }
             }
         })
-        .when('/email-history', {
-            templateUrl: '/views/templates/email-history.html',
+        .when('/email-list', {
+            templateUrl: '/views/templates/email-list.html',
             controller: 'EmailController as vm',
             resolve: {
                 getuser: function (UserService) {

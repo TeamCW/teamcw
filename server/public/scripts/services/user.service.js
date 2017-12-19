@@ -21,7 +21,7 @@ myApp.service('UserService', function ($http, $location) {
             console.log('UserService -- getuser -- failure: ', response);
             $location.path("/home");
         });
-    }
+    };
 
     self.getadmin = function () {
         $http.get('/user/admin').then(function (response) {
@@ -39,7 +39,7 @@ myApp.service('UserService', function ($http, $location) {
             console.log('UserService -- getuser -- failure: ', response);
             $location.path("/home");
         });
-    }
+    };
 
     self.getowner = function () {
         $http.get('/user/owner').then(function (response) {
@@ -57,7 +57,7 @@ myApp.service('UserService', function ($http, $location) {
             console.log('UserService -- getuser -- failure: ', response);
             $location.path("/home");
         });
-    }
+    };
 
     self.logout = function () {
         console.log('UserService -- logout');
@@ -66,13 +66,13 @@ myApp.service('UserService', function ($http, $location) {
             self.userObject = {};
             $location.path("/home");
         });
-    }
+    };
 
     self.refreshUsers = function () {
         $http.get('/user/refreshUser').then(function (response) {
             self.users.data = response.data;
-        })
-    }
+        });
+    };
 
     self.deleteUser = function (e_id) {
         $http.delete('/user/'+ e_id).then(function(response) {
@@ -80,8 +80,8 @@ myApp.service('UserService', function ($http, $location) {
             self.refreshUsers();
         }).catch(function(err) {
             console.log('Failed to delete user.');
-        })
-    }
+        });
+    };
 
     self.userToEdit = {
         e_id: '',
@@ -92,7 +92,7 @@ myApp.service('UserService', function ($http, $location) {
         username: '',
         employeeId: '',
         email: ''
-    }
+    };
 //how to create superuser without register
     self.editUser = function (user) {
         console.log('editing this user',user);
@@ -105,11 +105,11 @@ myApp.service('UserService', function ($http, $location) {
             username: user.username,
             employeeId: user.e_id,
             email: user.email
-        }
+        };
         console.log(self.userToEdit);
         self.editingUser = true;
         $location.path('/register');
-    }
+    };
 
     self.saveUserEdit = function () {
         console.log(self.userToEdit);
@@ -117,14 +117,14 @@ myApp.service('UserService', function ($http, $location) {
             console.log('User Edited');
             self.refreshUsers();
             $location.path('/admin');
-        })
-    }
+        });
+    };
 
     self.requestPasswordChange = function (email) {
         return $http.post('/user/password-reset', {email: email});
-    }
+    };
 
     self.resetPassword = function (code, password) {
         return $http.put('/user/password-reset', {code: code, password: password});
-    }
+    };
 });

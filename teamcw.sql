@@ -25,14 +25,6 @@ INSERT INTO "offices" (
   "office") VALUES (
   'Minneapolis');
 
-CREATE TABLE "email_batch" (
-	"batch_id" SERIAL PRIMARY KEY,
-	"file_name" VARCHAR(200),
-	"date" TIMESTAMP,
-	"user_id" SERIAL REFERENCES "users",
-	"office_id" SERIAL REFERENCES "offices"
-);
-
   CREATE TABLE "dbo_RPRT_Dataset" (
     "Report_Dataset_ID" integer NOT NULL,
     "Dataset_ID" integer,
@@ -95,6 +87,14 @@ CREATE TABLE "dbo_RPRT_Property" (
     "TenancyTypeId" integer
 );
 
+CREATE TABLE "email_batch" (
+	"batch_id" SERIAL PRIMARY KEY,
+	"file_name" VARCHAR(200),
+	"date" TIMESTAMP,
+	"user_id" SERIAL REFERENCES "users",
+	"office_id" SERIAL REFERENCES "offices"
+);
+
 CREATE TABLE "emails" (
   "email_id" serial primary key,
   "first" varchar(80),
@@ -105,10 +105,11 @@ CREATE TABLE "emails" (
   "building" varchar(80),
   "market" varchar(80),
   "email" varchar(200),
-  "batch_id" serial REFERENCES "email_batch",
-  "office_id" serial references "offices",
+  "batch_id" serial REFERENCES "email_batch" ON DELETE CASCADE,
+  "office_id" serial references "offices" ON DELETE CASCADE,
   "clicked" BOOLEAN DEFAULT FALSE,
-  "click_through" BOOLEAN DEFAULT FALSE
+  "click_through" BOOLEAN DEFAULT FALSE,
+  "market_link" BOOLEAN DEFAULT TRUE
 );
 
 CREATE TABLE "dbo_PROP_City" (

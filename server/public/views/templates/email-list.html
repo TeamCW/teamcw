@@ -1,24 +1,32 @@
 <div class="container">
     <h1 class="lead">Email List</h1>
+    <select ng-model="vm.data.viewBatch" ng-change="vm.getBatchEmails(vm.data.viewBatch)" ng-options="batch.batch_id as (batch.file_name + ' ' + batch.date) for batch in vm.data.batches">
+
+    </select>
+    {{vm.data.viewBatch}}
     <table>
         <thead>
             <tr>
                 <th>First</th>
                 <th>Last</th>
                 <th>Email</th>
+                <th>Market</th>
                 <th>Mail-to Link</th>
-                <th>Email Sent?</th>
+                <th>Include Link to Market</th>
             </tr>
         </thead>
-        <tbody>
-            <tr ng-repeat="contact in vm.es.data.contacts track by $index">
+        <tbody id="emailList">
+            <tr ng-class="{clicked: contact.clicked}" ng-repeat="contact in vm.data.contacts track by $index">
                 <td>{{contact.first}}</td>
                 <td>{{contact.last}}</td>
                 <td>{{contact.email}}</td>
+                <td></td>
                 <td>
                     <a ng-click="vm.clickEmailLink(contact,$index)" ng-href={{vm.emailTemplate(contact)}}>Email</a>
                 </td>
-                <td>{{contact.clicked}}</td>
+                <td>
+                    <input type="checkbox" ng-change="vm.toggleInsertLink(contact, $index)" ng-model="contact.market_link">
+                </td>
             </tr>
         </tbody>
     </table>

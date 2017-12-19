@@ -52,13 +52,14 @@ myApp.service('DataService', function ($http, $location, $q) {
 
     //Retrieve data for table and inventory on Market Page
     self.getMarketData = function (value) {
+        console.log('THIS IS THE MARKET DATA VALUE', value);
         return $http.get(`/data/all?state=${value.state}&year=${value.year}&quarter=${value.quarter}&market=${value.market}`).then(function (response) {
             self.data.data = response.data;
             console.log('Succesfully retrieved market data', response.data);
         }).catch(function (err) {
-            console.log('Error retrieving market data', err)
-        })
-    }
+            console.log('Error retrieving market data', err);
+        });
+    };
 
     //Return time-based absorption information for chart
     self.getAbsorptionData = function (value) {
@@ -66,9 +67,9 @@ myApp.service('DataService', function ($http, $location, $q) {
             self.data.inventory = response.data;
             console.log('Succesfully retrieved absorption', self.data.inventory);
         }).catch(function (err) {
-            console.log('Error retrieving absorption', err)
-        })
-    }
+            console.log('Error retrieving absorption', err);
+        });
+    };
 
     //Return time-based vacancy information for chart
     self.getVacancyData = function (value) {
@@ -76,9 +77,9 @@ myApp.service('DataService', function ($http, $location, $q) {
             self.data.vacancy = response.data;
             console.log('Succesfully retrieved vacancy', self.data.vacancy);
         }).catch(function (err) {
-            console.log('Error retrieving vacancy', err)
-        })
-    }
+            console.log('Error retrieving vacancy', err);
+        });
+    };
 
     //Return properties for market page map
     self.getMarketPropertyData = function (value) {
@@ -86,9 +87,9 @@ myApp.service('DataService', function ($http, $location, $q) {
             self.data.properties = response.data;
             console.log('Success', self.data.properties);
         }).catch(function (err) {
-            console.log('Error retrieving property data', err)
-        })
-    }
+            console.log('Error retrieving property data', err);
+        });
+    };
 
     //Return properties for market page map
     self.getProperty = function (value) {

@@ -17,7 +17,7 @@ router.get('/states', function (req, res) {
     } else {
       var queryText = `SELECT "dbo_RPRT_Property"."State" 
       FROM "dbo_RPRT_Property" 
-      GROUP BY "dbo_RPRT_Property"."State";`
+      GROUP BY "dbo_RPRT_Property"."State";`;
       db.query(queryText, function (errorMakingQuery, result) {
         done();
         if (errorMakingQuery) {
@@ -29,7 +29,7 @@ router.get('/states', function (req, res) {
       });
     }
   });//end of pool
-})
+});
 
 //RETRIEVE MARKET DROPDOWN INFORMATION ON HOMEPAGE
 router.get('/markets/:state', function (req, res) {
@@ -42,7 +42,7 @@ router.get('/markets/:state', function (req, res) {
       var queryText = `SELECT "dbo_RPRT_Property"."Submarket" 
       FROM "dbo_RPRT_Property" 
       WHERE "dbo_RPRT_Property"."State" = $1
-      GROUP BY "dbo_RPRT_Property"."Submarket";`
+      GROUP BY "dbo_RPRT_Property"."Submarket";`;
       db.query(queryText, [state], function (errorMakingQuery, result) {
         done();
         if (errorMakingQuery) {
@@ -54,7 +54,7 @@ router.get('/markets/:state', function (req, res) {
       });
     }
   });//end of pool
-})
+});
 
 //RETRIEVE ALL DATA
 router.get('/all', function (req, res) {
@@ -85,7 +85,7 @@ router.get('/all', function (req, res) {
           AND "dbo_RPRT_Dataset"."Period_Year" = $2
           AND SUBSTRING("dbo_RPRT_Dataset"."Dataset_Label",1,1) = $3 
           AND "dbo_RPRT_Property"."Submarket" = $4
-          GROUP BY "dbo_RPRT_Property"."Property_SubType";`
+          GROUP BY "dbo_RPRT_Property"."Property_SubType";`;
       db.query(queryText, [state, year, quarter, market], function (errorMakingQuery, result) {
         done();
         if (errorMakingQuery) {
@@ -97,7 +97,7 @@ router.get('/all', function (req, res) {
       });
     }
   });//end of pool
-})
+});
 
 //Total Direct Absorption line graph
 router.get('/absorption', function (req, res) {
@@ -119,7 +119,7 @@ router.get('/absorption', function (req, res) {
         AND "dbo_RPRT_Property"."Submarket" = $2
         GROUP BY "dbo_RPRT_Property"."Property_SubType", "dbo_RPRT_Dataset"."Dataset_Label", "dbo_RPRT_Dataset"."Period_Year"
         ORDER BY "Time";
-        `
+        `;
       db.query(queryText, [state, market], function (errorMakingQuery, result) {
         done();
         if (errorMakingQuery) {
@@ -153,7 +153,7 @@ router.get('/vacancy', function (req, res) {
         AND "dbo_RPRT_Property"."Submarket" = $2
         GROUP BY "dbo_RPRT_Property"."Property_SubType", "dbo_RPRT_Dataset"."Dataset_Label", "dbo_RPRT_Dataset"."Period_Year"
         ORDER BY "Time";
-        `
+        `;
       db.query(queryText, [state, market], function (errorMakingQuery, result) {
         done();
         if (errorMakingQuery) {
@@ -203,7 +203,7 @@ router.get('/marketproperties', function (req, res) {
         AND "dbo_RPRT_Dataset"."Period_Year" = $2
         AND SUBSTRING("dbo_RPRT_Dataset"."Dataset_Label",1,1) = $3 
         AND "dbo_RPRT_Property"."Submarket" = $4;
-        `
+        `;
       db.query(queryText, [state, year, quarter, market], function (errorMakingQuery, result) {
         done();
         if (errorMakingQuery) {
@@ -306,10 +306,10 @@ router.post('/csv/', function (req, res) {
         res.sendStatus(200);
       })
       .catch((error) => {
-        console.log('caught failure somewhere in processDataCSV')
+        console.log('caught failure somewhere in processDataCSV');
         res.sendStatus(500);
       });
-    })
+    });
   }
 });
 
@@ -359,20 +359,23 @@ function storeDataCSV(dataInfo) {
     let user = dataInfo.user;
     let batchId = dataInfo.batchId;
     data.forEach((property) => {
+      if (success){
+
+      }
       pool.connect(function (errorConnecting, db, done) {
         if (errorConnecting) {
           console.log('Error connecting', errorConnecting);
           reject(errorConnecting);
         } else {
-          var queryText = 'INSERT INTO "dbo_RPRT_Property" ("Report_Property_ID","Report_Dataset_ID","Property_ID","Property_Name",'
-          + '"Address_1","Address_2","City_ID","State","Zip","Outlook","SubMarket_ID","Submarket","Property_Type_ID","Property_Type",'
-          + '"Building_Size","Number_Of_Floors","Year_Built","Year_Renovated","X_Coordinate","Y_Coordinate","Squarefeet_Available",'
-          + '"Squarefeet_Vacant","Squarefeet_Sublease","Absorption","Divisible_Min","Divisible_Max","Rate_Low","Rate_High",'
-          + '"Squarefeet_OP_Expenses","Squarefeet_Taxes","Year_Tax","Sale_Asking_Price","Rate_Alpha","Property_SubType_ID",'
-          + '"Property_SubType","Total_Op_Expenses_Taxes","RUFactor","TenantsInfo","Created_User","Created_Date","Modified_User",'
-          + '"Modified_Date","Construction","IsInAbsorptionCalculation","TenancyTypeId") '
-          + 'VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24'
-          + ',$25,$26,$27,$28,$29,$30,$31,$32,$33,$34,$35,$36,$37,$38,$39,$40,$41,$42,$43,$44,$45);';
+          var queryText = 'INSERT INTO "dbo_RPRT_Property" ("Report_Property_ID","Report_Dataset_ID","Property_ID","Property_Name",' +
+          '"Address_1","Address_2","City_ID","State","Zip","Outlook","SubMarket_ID","Submarket","Property_Type_ID","Property_Type",' +
+          '"Building_Size","Number_Of_Floors","Year_Built","Year_Renovated","X_Coordinate","Y_Coordinate","Squarefeet_Available",' +
+          '"Squarefeet_Vacant","Squarefeet_Sublease","Absorption","Divisible_Min","Divisible_Max","Rate_Low","Rate_High",' +
+          '"Squarefeet_OP_Expenses","Squarefeet_Taxes","Year_Tax","Sale_Asking_Price","Rate_Alpha","Property_SubType_ID",' +
+          '"Property_SubType","Total_Op_Expenses_Taxes","RUFactor","TenantsInfo","Created_User","Created_Date","Modified_User",' +
+          '"Modified_Date","Construction","IsInAbsorptionCalculation","TenancyTypeId") ' +
+          'VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24' +
+          ',$25,$26,$27,$28,$29,$30,$31,$32,$33,$34,$35,$36,$37,$38,$39,$40,$41,$42,$43,$44,$45);';
           db.query(queryText, [
             property.Report_Property_ID,
             property.Report_Dataset_ID,
@@ -422,11 +425,10 @@ function storeDataCSV(dataInfo) {
           ], function (errorMakingQuery, result) {
             done();
             if (errorMakingQuery) {
-              console.log('error making query', errorMakingQuery);
+              success = false;
+              console.log('Error making property database entries',errorMakingQuery);
               console.log('error with this property:',property);
               reject(errorMakingQuery);
-            } else {
-
             }
           });
         }
