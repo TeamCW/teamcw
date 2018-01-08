@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container cleanFooter">
     <div ng-hide="vm.officeService.editingOffice">
     <h1 class="lead">Create Office</h1>
     <form ng-submit="vm.createOffice()">
@@ -7,7 +7,7 @@
             <input class="form-control input-small" type="text" ng-model="vm.newOffice.name" />
         </div>
         <div>
-            <input class="btn btn-default" type="submit" name="submit" value="Create Office" />
+            <input class="btn btn-default redBtn" type="submit" name="submit" value="Create Office" />
         </div>
     </form>
     </div>
@@ -19,7 +19,7 @@
             <input class="form-control input-small" type="text" ng-model="vm.officeService.officeToEdit.name" ng-value="vm.officeService.officeToEdit.name"/>
         </div>
         <div>
-            <input class="btn btn-default" type="submit" name="submit" value="Save" />
+            <input class="btn btn-default redBtn" type="submit" name="submit" value="Save" />
         </div>
     </form>
     </div>

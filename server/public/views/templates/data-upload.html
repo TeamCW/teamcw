@@ -1,8 +1,8 @@
-<div class="container">
+<div class="container cleanFooter">
     <h1 class="lead">Upload Property Data</h1>
-    <span class="glyphicon glyphicon-file"></span><a href="../csv-templates/property-template.csv">Download Property Data CSV Template</a><br>
-    <span class="glyphicon glyphicon-file"></span><a href="../csv-templates/dataset-template.csv">Download Dataset CSV Template</a><br>
-    <span class="glyphicon glyphicon-file"></span><a href="../csv-templates/city-template.csv">Download City Data CSV Template</a>
+    <span class="glyphicon glyphicon-file"></span><a href="../csv-templates/property-template.csv" download>Download Property Data CSV Template</a><br>
+    <span class="glyphicon glyphicon-file"></span><a href="../csv-templates/dataset-template.csv" download>Download Dataset CSV Template</a><br>
+    <span class="glyphicon glyphicon-file"></span><a href="../csv-templates/city-template.csv" download>Download City Data CSV Template</a>
     <form ng-submit="vm.dataUpload(vm.uploaderOptions)">
         <div nv-file-drop="" uploader="vm.uploader" class="uploadFile">
             <label for="officeName">Upload Property Data CSV</label>
