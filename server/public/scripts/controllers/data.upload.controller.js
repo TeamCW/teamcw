@@ -5,6 +5,11 @@ myApp.controller('DataUploadController', function ($location, DataService, UserS
     vm.uploaderOptions = ds.uploaderOptions;
 
     vm.dataUpload = function (options) {
-        vm.uploader.uploadAll()
+        vm.uploader.uploadAll();
+        swal (
+            'Success',
+            'Data has been uploaded',
+            'success'
+        );
     };
 });
