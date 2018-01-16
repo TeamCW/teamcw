@@ -24,6 +24,7 @@ myApp.service('DataService', function ($http, $location, $q) {
     }
 
     self.userObject = {};
+    // posts selected csv file upload to url path
     self.uploaderOptions = {
         property: {
             url: '/data/csv/property/',

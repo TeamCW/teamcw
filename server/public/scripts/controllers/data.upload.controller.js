@@ -4,7 +4,9 @@ myApp.controller('DataUploadController', function ($location, DataService, UserS
     vm.uploader = UploadService.uploader;
     vm.uploaderOptions = ds.uploaderOptions;
 
-    vm.dataUpload = function (options) {
+    // uploader from angular-fileupload
+    // uploader options are in data.service.js
+    vm.dataUpload = function () {
         vm.uploader.uploadAll();
     };
 });
